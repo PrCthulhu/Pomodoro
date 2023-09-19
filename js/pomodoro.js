@@ -16,8 +16,12 @@ class Timer {
         this.start();
         if(this.index === 0){
             document.getElementById("status").textContent = "workTime"
+            document.getElementById('body').style.backgroundColor = "rgba(184, 104, 144)"
+            document.getElementById('buttonStart').style.backgroundColor = "rgba(184, 104, 144)"
         }else{
             document.getElementById("status").textContent = "breakTime"
+            document.getElementById('body').style.backgroundColor = "rgba(104, 139, 184)"
+            document.getElementById('buttonStart').style.backgroundColor = "rgba(104, 139, 184)" 
         }
     }
 
@@ -44,6 +48,7 @@ class Timer {
 }
 
 const bouttonStart = document.getElementById('buttonStart');
+document.getElementsByTagName
 let workTime = 1
 let breakTime = 1
 let tempsDeTravail = [workTime*60, breakTime*60]
