@@ -38,7 +38,7 @@ class Timer {
         this.seconds = this.counter % 60;
         this.minutes = parseInt(this.counter / 60);
         document.getElementById("timer").innerHTML = `${this.minutes.toString().padStart(2, '0')}:${this.seconds.toString().padStart(2, '0')}`;
-        
+
         // If the timer reaches zero, stop the interval and move to the next stage.
         if (this.counter <= 0) {
             clearInterval(this.intervalId);
@@ -62,34 +62,50 @@ class Timer {
 // Get the button element with the ID 'buttonStart'.
 const bouttonStart = document.getElementById('buttonStart');
 
-// Set initial work and break times.
-let workTime = 25;
-let breakTime = 5;
-let tempsDeTravail = [workTime * 60, breakTime * 60];
-
-// Create a new Timer instance with the specified work and break times.
-const chrono = new Timer(tempsDeTravail);
+let isStarted = false
 
 // Add a click event listener to the 'Start' button.
 bouttonStart.addEventListener('click', () => {
     document.getElementById("buttonStart").innerHTML = '<em class="fa-solid fa-rotate-right"></em>';
-    
+
+
+
+    // Set initial work and break times.
+    let workTime = document.getElementById("timeOfWork").value;
+    let breakTime = document.getElementById("timeOfBreak").value;
+    let tempsDeTravail = [workTime * 60, breakTime * 60];
+
+    // Create a new Timer instance with the specified work and break times.
+    let chrono = new Timer(tempsDeTravail);
+
     // If the timer is already running, reload the page to reset.
-    if (chrono.isRunning === true) {
+    if (isStarted) {
         location.reload();
     }
-    
+
+    isStarted = true
+
     // Start the timer.
     chrono.start();
 });
 
 // Calculate and display the initial timer value.
-let seconds = (workTime * 60) % 60;
-let minutes = parseInt(workTime);
+let seconds = (document.getElementById("timeOfWork").value * 60) % 60;
+let minutes = parseInt(document.getElementById("timeOfWork").value);
 let timerLoad = document.getElementById("timer");
 timerLoad.innerHTML = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 
+document.getElementById("timeOfWork").addEventListener('input', () => {
+    let seconds = (document.getElementById("timeOfWork").value * 60) % 60;
+    let minutes = parseInt(document.getElementById("timeOfWork").value);
+    let timerLoad = document.getElementById("timer");
+    timerLoad.innerHTML = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+})
 
+document.getElementById("timeOfBreak").addEventListener('input', () => {
+    let seconds = (document.getElementById("timeOfBreak").value * 60) % 60;
+    let minutes = parseInt(document.getElementById("timeOfBreak").value);
+})
 
 
 
