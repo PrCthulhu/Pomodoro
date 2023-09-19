@@ -1,71 +1,94 @@
+// Define a Timer class that manages a countdown timer with work and break times.
 class Timer {
-    constructor([workTime,breakTime]){
-      this.counter = workTime;
-      this.seconds = 0;
-      this.minutes = 0;
-      this.stage = [workTime,breakTime];
-      this.index = 0;
-      this.isRunning = false;
+    constructor([workTime, breakTime]) {
+        // Initialize timer properties.
+        this.counter = workTime;
+        this.seconds = 0;
+        this.minutes = 0;
+        this.stage = [workTime, breakTime];
+        this.index = 0;
+        this.isRunning = false;
     }
 
+    // Function to switch between work and break times.
     nextIndex = () => {
         this.index = (this.index + 1) % 2;
         console.log(this.index);
         this.counter = this.stage[this.index];
         console.log(this.counter);
         this.start();
-        if(this.index === 0){
+
+        // Update UI based on the current stage (work or break).
+        if (this.index === 0) {
             document.getElementById("status").textContent = "workTime"
             document.getElementById('body').style.backgroundColor = "rgba(184, 104, 144)"
             document.getElementById('buttonStart').style.backgroundColor = "rgba(184, 104, 144)"
-        }else{
+            document.getElementById('status').style.backgroundColor = "rgb(189, 35, 176)"
+        } else {
             document.getElementById("status").textContent = "breakTime"
             document.getElementById('body').style.backgroundColor = "rgba(104, 139, 184)"
-            document.getElementById('buttonStart').style.backgroundColor = "rgba(104, 139, 184)" 
+            document.getElementById('buttonStart').style.backgroundColor = "rgba(104, 139, 184)"
+            document.getElementById('status').style.backgroundColor = "rgb(35, 102, 189)"
         }
     }
 
+    // Function to decrement the timer by one second.
     addSecond = () => {
         this.counter -= 1;
-        this.seconds = this.counter % 60
-        this.minutes = parseInt(this.counter/60);
+        this.seconds = this.counter % 60;
+        this.minutes = parseInt(this.counter / 60);
         document.getElementById("timer").innerHTML = `${this.minutes.toString().padStart(2, '0')}:${this.seconds.toString().padStart(2, '0')}`;
-        if(this.counter <= 0){
-            clearInterval(this.intervalId)
+        
+        // If the timer reaches zero, stop the interval and move to the next stage.
+        if (this.counter <= 0) {
+            clearInterval(this.intervalId);
             this.nextIndex();
         }
     };
 
+    // Function to start the timer.
     start = () => {
-        clearInterval(this.intervalId)
+        clearInterval(this.intervalId);
         this.isRunning = true;
-        this.intervalId = setInterval(this.addSecond, 10);
+        this.intervalId = setInterval(this.addSecond, 1000);
     };
 
+    // Function to reset the timer.
     reset = () => {
         location.reload();
     }
 }
 
+// Get the button element with the ID 'buttonStart'.
 const bouttonStart = document.getElementById('buttonStart');
-document.getElementsByTagName
-let workTime = 1
-let breakTime = 1
-let tempsDeTravail = [workTime*60, breakTime*60]
 
-const chrono = new Timer(tempsDeTravail)
+// Set initial work and break times.
+let workTime = 25;
+let breakTime = 5;
+let tempsDeTravail = [workTime * 60, breakTime * 60];
+
+// Create a new Timer instance with the specified work and break times.
+const chrono = new Timer(tempsDeTravail);
+
+// Add a click event listener to the 'Start' button.
 bouttonStart.addEventListener('click', () => {
-        document.getElementById("buttonStart").innerHTML = '<em class="fa-solid fa-rotate-right"></em>'
-        if(chrono.isRunning === true){
-            location.reload()
-        }
-        chrono.start();
-})
+    document.getElementById("buttonStart").innerHTML = '<em class="fa-solid fa-rotate-right"></em>';
+    
+    // If the timer is already running, reload the page to reset.
+    if (chrono.isRunning === true) {
+        location.reload();
+    }
+    
+    // Start the timer.
+    chrono.start();
+});
 
-let seconds = (workTime*60) % 60
+// Calculate and display the initial timer value.
+let seconds = (workTime * 60) % 60;
 let minutes = parseInt(workTime);
-let timerLoad = document.getElementById("timer")
-timerLoad.innerHTML = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+let timerLoad = document.getElementById("timer");
+timerLoad.innerHTML = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
 
 
 
